@@ -9,7 +9,7 @@ resource "aws_iam_policy" "terraform_state_policy"{
             {
             "Effect": "Allow",
             "Action": "s3:ListBucket",
-              "Resource": "arn:aws:s3:::bic-photstory",
+              "Resource": "aarn:aws:s3:::bic-photostory",
               "Condition": {
                 "StringEquals": {
                   "s3:prefix": "bic-photstory/terraform.tfstate"
