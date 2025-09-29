@@ -29,3 +29,21 @@ jobs:
         
       - name: Build application
         run: npm run build
+        
+      - name: Sync dist folder to S3
+        run: |
+          aws s3 sync dist/ s3://bic-photostory/ --delete
+          echo "Application deployed to S3 bucket: bic-photostory"
+
+      - name: Get CloudFront Distribution ID
+        id: cloudfront
+        run: |
+          cd terraform
+          DISTRIBUTION_ID=$(terraform output -raw cloudfront_distribution_id)
+          echo "distribution_id=$DISTRIBUTION_ID" >> $GITHUB_OUTPUT
+          echo "Found CloudFront Distribution ID: $DISTRIBUTION_ID"
+
+      - name: Deploy to CloudFront
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ steps.cloudfront.outputs.distribution_id }} --paths "/*"
+          echo "Application deployed to CloudFront distribution: ${{ steps.cloudfront.outputs.distribution_id }}"
