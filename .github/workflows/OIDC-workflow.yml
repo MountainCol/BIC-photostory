@@ -16,7 +16,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           audience: sts.amazonaws.com
-          role-to-assume: ${{ secrets.ROLE }}
+          role-to-assume: ${{ secrets.BIC_PHOTOSTORY_OIDC_ROLE_ARN }}
           aws-region: eu-west-1
 
       - name: Setup Node.js
