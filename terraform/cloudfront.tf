@@ -59,3 +59,19 @@ resource "aws_cloudfront_distribution" "distribution" {
 resource "aws_cloudfront_origin_access_identity" "oai" {
   comment = "OAI for BIC PhotoStory S3 bucket"
 }
+
+# Outputs
+output "cloudfront_distribution_id" {
+  value       = aws_cloudfront_distribution.distribution.id
+  description = "CloudFront Distribution ID"
+}
+
+output "cloudfront_distribution_url" {
+  value       = "https://${aws_cloudfront_distribution.distribution.domain_name}"
+  description = "CloudFront Distribution URL"
+}
+
+output "cloudfront_domain_name" {
+  value       = aws_cloudfront_distribution.distribution.domain_name
+  description = "CloudFront Domain Name"
+}
