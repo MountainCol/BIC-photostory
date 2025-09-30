@@ -1,7 +1,12 @@
+# Reference existing S3 bucket
+data "aws_s3_bucket" "bic_photostory" {
+  bucket = "bic-photostory"
+}
+
 resource "aws_cloudfront_distribution" "distribution" {
   origin {
-    domain_name = aws_s3_bucket.bic_photostory.bucket_regional_domain_name
-    origin_id   = "S3-${aws_s3_bucket.bic_photostory.id}"
+    domain_name = data.aws_s3_bucket.bic_photostory.bucket_regional_domain_name
+    origin_id   = "S3-${data.aws_s3_bucket.bic_photostory.id}"
 
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path
@@ -15,7 +20,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   default_cache_behavior {
     allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods         = ["GET", "HEAD"]
-    target_origin_id       = "S3-${aws_s3_bucket.bic_photostory.id}"
+    target_origin_id       = "S3-${data.aws_s3_bucket.bic_photostory.id}"
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
 
