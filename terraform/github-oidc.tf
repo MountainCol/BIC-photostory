@@ -78,7 +78,34 @@ resource "aws_iam_policy" "github_actions_cloudfront" {
     ]
   })
 }
+# Policy for IAM read access (needed for Terraform data sources)
+resource "aws_iam_policy" "github_actions_iam_read" {
+  name        = "GitHubActionsIAMReadPolicy"
+  description = "Policy for GitHub Actions to read IAM resources"
 
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "iam:ListOpenIDConnectProviders",
+          "iam:GetOpenIDConnectProvider",
+          "iam:GetRole",
+          "iam:GetPolicy",
+          "iam:ListAttachedRolePolicies"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+# Attach IAM read policy to role
+resource "aws_iam_role_policy_attachment" "github_actions_iam_read" {
+  role       = aws_iam_role.github_actions.name
+  policy_arn = aws_iam_policy.github_actions_iam_read.arn
+}
 # Attach S3 policy to role
 resource "aws_iam_role_policy_attachment" "github_actions_s3" {
   role       = aws_iam_role.github_actions.name
