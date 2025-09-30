@@ -53,7 +53,8 @@ jobs:
         id: cloudfront
         run: |
           cd terraform
-          terraform init
+          terraform init       
+          terraform refresh -auto-approve
           DISTRIBUTION_ID=$(terraform output -raw cloudfront_distribution_id)
           echo "distribution_id=$DISTRIBUTION_ID" >> $GITHUB_OUTPUT
           echo "Found CloudFront Distribution ID: $DISTRIBUTION_ID"
