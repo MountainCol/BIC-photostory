@@ -71,7 +71,8 @@ resource "aws_iam_policy" "github_actions_cloudfront" {
         Action = [
           "cloudfront:CreateInvalidation",
           "cloudfront:GetInvalidation",
-          "cloudfront:ListInvalidations"
+          "cloudfront:ListInvalidations",
+          "cloudfront:ListDistributions"
         ]
         Resource = "*"
       }
